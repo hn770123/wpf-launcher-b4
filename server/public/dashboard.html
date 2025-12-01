@@ -9,17 +9,29 @@
 </head>
 
 <body>
-    <div class="container dashboard">
-        <h1>Welcome, <span id="userDisplay">User</span></h1>
-        <p>Select an action below:</p>
+    <!DOCTYPE html>
+    <html lang="ja">
 
-        <button id="launchBtn" class="launch-btn">Launch Medical System</button>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Medical Launcher Dashboard</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
 
-        <div style="margin-top: 20px;">
-            <a href="#" id="logoutBtn">Logout</a>
+    <body>
+        <div class="container dashboard">
+            <h1>Welcome, <span id="userDisplay">User</span></h1>
+            <p>Select an action below:</p>
+
+            <button id="launchBtn" class="launch-btn">Launch Medical System</button>
+
+            <div style="margin-top: 20px;">
+                <div id="adminLinkContainer"></div>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
         </div>
-    </div>
-    <script src="js/dashboard.js"></script>
-</body>
+        <script src="js/dashboard.js"></script>
+    </body>
 
-</html>
+    </html>

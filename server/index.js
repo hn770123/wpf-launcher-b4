@@ -77,6 +77,66 @@ app.get('/api/connect', authenticateToken, (req, res) => {
     });
 });
 
+// 管理者権限チェックミドルウェア
+const requireAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).json({ success: false, message: 'Forbidden: Admin access required' });
+    }
+};
+
+// ユーザー一覧取得 (管理者のみ)
+app.get('/api/users', authenticateToken, requireAdmin, (req, res) => {
+    const stmt = db.prepare('SELECT id, username, role, department FROM users');
+    const users = stmt.all();
+    res.json(users);
+});
+
+// ユーザー作成 (管理者のみ)
+app.post('/api/users', authenticateToken, requireAdmin, (req, res) => {
+    const { username, password, role, department } = req.body;
+    try {
+        const stmt = db.prepare('INSERT INTO users (username, password, role, department) VALUES (?, ?, ?, ?)');
+        stmt.run(username, password, role || 'user', department);
+        res.json({ success: true, message: 'User created' });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
+// ユーザー更新 (管理者のみ)
+app.put('/api/users/:id', authenticateToken, requireAdmin, (req, res) => {
+    const { username, password, role, department } = req.body;
+    const { id } = req.params;
+
+    try {
+        // パスワードが空の場合は更新しない
+        if (password) {
+            const stmt = db.prepare('UPDATE users SET username = ?, password = ?, role = ?, department = ? WHERE id = ?');
+            stmt.run(username, password, role, department, id);
+        } else {
+            const stmt = db.prepare('UPDATE users SET username = ?, role = ?, department = ? WHERE id = ?');
+            stmt.run(username, role, department, id);
+        }
+        res.json({ success: true, message: 'User updated' });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
+// ユーザー削除 (管理者のみ)
+app.delete('/api/users/:id', authenticateToken, requireAdmin, (req, res) => {
+    const { id } = req.params;
+    try {
+        const stmt = db.prepare('DELETE FROM users WHERE id = ?');
+        stmt.run(id);
+        res.json({ success: true, message: 'User deleted' });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

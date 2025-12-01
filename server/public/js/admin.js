@@ -98,10 +98,11 @@ async function handleFormSubmit(e) {
             closeModal();
             fetchUsers();
         } else {
-            alert(data.message);
+            alert(data.message || 'An error occurred');
         }
     } catch (error) {
         console.error('Error saving user:', error);
+        alert('Failed to save user. See console for details.');
     }
 }
 

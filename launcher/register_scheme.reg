@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\medlauncher]
+@="URL:Medical Launcher Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\medlauncher\shell]
+
+[HKEY_CLASSES_ROOT\medlauncher\shell\open]
+
+[HKEY_CLASSES_ROOT\medlauncher\shell\open\command]
+@="\"C:\\Users\\hn770\\source\\repos\\antigra\\wpf-launcher-b4\\launcher\\MedicalLauncher\\bin\\Debug\\net461\\MedicalLauncher.exe\" \"%1\""

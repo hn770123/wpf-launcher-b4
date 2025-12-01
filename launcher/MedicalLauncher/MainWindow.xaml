@@ -1,0 +1,96 @@
+﻿<Window x:Class="MedicalLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalLauncher"
+        mc:Ignorable="d"
+        Title="Medical Launcher" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F7F6"
+        FontFamily="Segoe UI">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="AppButtonStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E8F0FE"/>
+                                <Setter Property="BorderBrush" Value="#007BFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#007BFF" Padding="20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Medical Portal" Foreground="White" FontSize="24" FontWeight="SemiBold"/>
+                <TextBlock x:Name="StatusText" Text="Connecting..." Foreground="#E0E0E0" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <ItemsControl x:Name="CategoriesControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
+                            <ItemsControl ItemsSource="{Binding Apps}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource AppButtonStyle}" Click="AppButton_Click" Tag="{Binding Path}">
+                                            <StackPanel>
+                                                <!-- Icon would go here, using a placeholder for now -->
+                                                <Ellipse Width="40" Height="40" Fill="#28A745" Margin="0,0,0,10"/>
+                                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="White" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Check for Updates" Padding="10,5" Background="Transparent" BorderThickness="0" Foreground="#007BFF" Click="Update_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
